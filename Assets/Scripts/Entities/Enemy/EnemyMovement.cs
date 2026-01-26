@@ -24,14 +24,18 @@ public class EnemyMovement : MonoBehaviour
     {
         if (!target)
         {
-            Debug.Log("not ws");
             GetTarget(); 
         }
         else
         {
-            Debug.Log("ws");
             RotateToTarget();
+            MoveToTarget();
         }
+    }
+
+    void MoveToTarget()
+    {
+        body.linearVelocity = transform.up * speed;
     }
 
     void RotateToTarget()
@@ -49,7 +53,9 @@ public class EnemyMovement : MonoBehaviour
 
     void GetTarget()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-
+        if ( GameObject.FindGameObjectWithTag("Player"))
+        {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+        }
     }
 }
