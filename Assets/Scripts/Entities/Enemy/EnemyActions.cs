@@ -1,4 +1,5 @@
 using System.Security.Principal;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyActions : MonoBehaviour
@@ -16,6 +17,10 @@ public class EnemyActions : MonoBehaviour
     private Collider2D rangeCollider;
     private EnemyAttack enemyAttack;
 
+    [SerializeField]
+    private float attackCooldown = 1.2f;
+
+    private float attackTimer = 0f;
 
     void Awake()
     {
@@ -31,18 +36,32 @@ public class EnemyActions : MonoBehaviour
         {
             Debug.LogWarning("RangeAttack: Not found", this);
         }
+
+        attackTimer = 0f;
+    }
+
+    bool CanAttack()
+    {
+        attackTimer -= Time.deltaTime;
+        return attackTimer <= 0f;
+    }
+
+    void ResetAttackTimer()
+    {
+        attackTimer = attackCooldown;
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        
-        if (collision.TryGetComponent<Entity>(out var entity))
-        {
-            enemyAttack.Attack(enemyType, entity);
-            
-        }
+        if (!collision.TryGetComponent<Entity>(out var entity))
+            return;
 
+        if (!CanAttack())
+            return;
+
+        enemyAttack.Attack(enemyType, entity);
+        ResetAttackTimer();
     }
 
 }

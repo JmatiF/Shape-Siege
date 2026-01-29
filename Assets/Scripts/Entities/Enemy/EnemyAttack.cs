@@ -20,7 +20,7 @@ public class EnemyAttack : MonoBehaviour
 
     private void MeleeAttack(Entity target)
     {
-        float selfDamage = selfEntity.getDamage();
+        float selfDamage = selfEntity.GetDamage();
         target.TakeDamage(selfDamage);
     }
 }
