@@ -1,6 +1,7 @@
 using UnityEngine;
 using static EnemyActions;
 using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyAttack : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class EnemyAttack : MonoBehaviour
     }
     public void Attack(EnemyType enemyType, Entity entity)
     {
+        if (!entity.CompareTag("Player"))
+            return;
+
         if (enemyType == EnemyType.Melee)
         {
             MeleeAttack(entity);
